@@ -1919,3 +1919,65 @@ loadStatsSetting();
 showMagicLinkBtn?.addEventListener('click', () => {
   console.debug('Legacy magic-link handler invoked; no-op because new on-demand handler runs on DOMContentLoaded.');
 });
+
+
+(async function(){
+  const REDIRECT_TO = 'authenticate.html';
+
+  function go() {
+    // use replace so back button doesn't bounce them back to the protected page
+    location.replace(REDIRECT_TO);
+  }
+
+  // If no supabase client present, treat as not-signed-in and redirect
+  if (!window.supabase) {
+    go();
+    return;
+  }
+
+  const supabase = window.supabase;
+
+  try {
+    // v2: auth.getSession()
+    if (supabase.auth && typeof supabase.auth.getSession === 'function') {
+      const res = await supabase.auth.getSession();
+      const session = (res && (res.data && res.data.session)) || res.session || null;
+      if (session) return; // signed in -> do nothing
+      go();
+      return;
+    }
+
+    // v2: auth.getUser()
+    if (supabase.auth && typeof supabase.auth.getUser === 'function') {
+      const res = await supabase.auth.getUser();
+      const user = (res && (res.data && res.data.user)) || res.user || null;
+      if (user) return;
+      go();
+      return;
+    }
+
+    // v1 fallback: auth.session()
+    if (supabase.auth && typeof supabase.auth.session === 'function') {
+      const session = supabase.auth.session();
+      if (session) return;
+      go();
+      return;
+    }
+
+    // v1 fallback: auth.user()
+    if (supabase.auth && typeof supabase.auth.user === 'function') {
+      const user = supabase.auth.user();
+      if (user) return;
+      go();
+      return;
+    }
+
+    // No recognizable auth methods -> assume not signed in
+    go();
+  } catch (err) {
+    // any error during checks => treat as not signed in
+    console.warn('Auth check failed:', err);
+    go();
+  }
+})();
+

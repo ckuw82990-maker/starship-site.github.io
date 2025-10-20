@@ -74,6 +74,10 @@ const isPlayPage = window.location.pathname.includes('play');
 
 const navbarHTML = isPlayPage
   ? `
+  <header style="background-color: #8a2be2; color: white; padding: 1rem 2rem; text-align: center; font-family: 'Inter', sans-serif;">
+  <p>starship is getting an overhaul... updates are discontinued. but don't worry, great things are coming soon.</p>
+</header>
+
   <!-- Left Sidebar Navigation -->
 <div class="starship-sidebar" id="starshipSidebar">
   <div class="sidebar-logo">

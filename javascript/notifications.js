@@ -318,6 +318,14 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
       icon: 'fa-bell'
     });
 
+    // Example static notifications
+    showNotification('Updates Paused', {
+      body: "starship's updates are being paused. a new version of the site will be released in 2026 named moonlight. see you there!",
+      sound: true,
+      style: 'mini',
+      icon: 'fa-bell'
+    });
+    
     showNotification('Leave us a review!', {
       body: "Enjoy using our site? Leave a review <a href='/reviews' style='text-decoration:underline;'>here</a>.",
       duration: 10000,

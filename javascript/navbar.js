@@ -1,3 +1,18 @@
+window.location.href = '/shutdown.html';
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const supabase = createClient(
@@ -387,7 +402,7 @@ if (!reduceTransparency && dynamicIslandShow) {
     <div id="dynamicIsland" style="
       position: fixed;
       top: 16px;
-      left: 260px; /* will be updated dynamically */
+      left: 260px; /* will be updated dynamically */ /*
       background: rgba(138, 43, 226, 0.85);
       color: white;
       padding: 10px 16px;
@@ -1063,4 +1078,4 @@ async function checkBan() {
 checkBan();
 
 // Re-run every minute
-setInterval(checkBan, 60_000);
+setInterval(checkBan, 60_000); /* 60 seconds */

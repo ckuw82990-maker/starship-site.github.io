@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starship Shutdown Notice</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        /* BASE STYLES & FONT */
+        * { 
+            margin:0; 
+            padding:0; 
+            box-sizing:border-box; 
+            font-family:'Inter', sans-serif;
+        }
+
+        /* ANIMATION FOR PAGE LOAD */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* DARK THEME BODY */
+        body {
+            background: linear-gradient(135deg, #0a0a0a, #000000, #0a0a0a);
+            color:#fff;
+            display:flex;
+            justify-content:center;
+            align-items:center; 
+            min-height:100vh; 
+            padding:20px;
+            overflow:hidden;
+        }
+        
+        /* MAIN CONTENT CONTAINER */
+        .container {
+            width:100%; 
+            max-width:700px; 
+            display:flex; 
+            flex-direction:column; 
+            gap:24px; 
+            background: rgba(255, 255, 255, 0.05); 
+            padding:40px; 
+            border-radius:24px; 
+            backdrop-filter: blur(60px);
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            text-align: center;
+            opacity: 0; /* Start hidden for animation */
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .headline {
+            font-size: 3.5rem; 
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .sub-headline {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: #ffffff; 
+        }
+        
+        .paragraph {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 10px;
+        }
+        
+        /* BUTTON STYLING */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #ffffff; 
+            border: 1px solid #ffffff;
+            border-radius: 12px;
+            padding: 14px 24px;
+            cursor: pointer; 
+            color: #000000; 
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none; 
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+        }
+
+        .btn:hover:not(:disabled) { 
+            transform: translateY(-3px);
+            background: #e0e0e0;
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        
+        .headline-icon {
+            color: #ffffff;
+            margin-right: 15px;
+        }
+
+        /* MODAL & DISCLAIMER STYLES */
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-backdrop.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            text-align: left;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            animation: modalFadeIn 0.5s ease-out;
+        }
+
+        .modal-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .disclaimer-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .disclaimer-list li {
+            margin-bottom: 5px;
+        }
+        
+        .disclaimer-list i {
+            margin-right: 8px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 10px;
+            /* Basic styling for visibility */
+            width: 18px; 
+            height: 18px;
+            accent-color: #ffffff;
+            cursor: pointer;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        /* Media query for smaller screens */
+        @media (max-width: 600px) {
+            .headline { font-size: 2.5rem; }
+            .sub-headline { font-size: 1.3rem; }
+            .container { padding: 25px; }
+            .paragraph { font-size: 1rem; }
+            .btn { font-size: 1rem; padding: 12px 20px; }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="headline">
+        <i class="fa-solid fa-satellite-dish headline-icon"></i> 
+        Starship is Being Shutdown
+    </h1>
+    
+    <div class="paragraph">
+        It's the end of an era. We know this news is disappointing, and we are sad to see Starship go. It served its purpose well as a cornerstone for our community, but as technology evolves, so must we.
+    </div>
+
+    <h2 class="sub-headline">🚀 Introducing Moonlight 🌙</h2>
+
+    <div class="paragraph">
+        The future is here. We are thrilled to introduce Moonlight, a brand new website with the same purpose and community focus as Starship, but 1000x better. Moonlight is way more secure and better built, bringing you a cleaner UI, better load times, and way less bugs than Starship. It's the next generation platform you've been waiting for.
+    </div>
+
+    <button id="openModalBtn" class="btn">
+        <i class="fa-solid fa-rocket"></i> Go to Moonlight (Beta)
+    </button>
+</div>
+
+<div id="disclaimerModal" class="modal-backdrop">
+    <div class="modal-content">
+        <h3>🚨 Beta Disclaimer & Agreement</h3>
+        
+        <p class="paragraph" style="margin-top:0; font-size:1rem; color: #fff;">
+            Moonlight is currently in public beta. Please review and acknowledge the following:
+        </p>
+
+        <ul class="disclaimer-list">
+            <li><i class="fa-solid fa-code-branch"></i> Not all games are currently added.</li>
+            <li><i class="fa-solid fa-exclamation-triangle"></i> Some features may be incomplete or subject to change.</li>
+            <li><i class="fa-solid fa-cloud-arrow-down"></i> We cannot promise 100% uptime during the beta phase.</li>
+            <li><i class="fa-solid fa-lock"></i> We are constantly working to improve security and fix bugs.</li>
+            <li><i class="fa-solid fa-user"></i> Your data will NOT be transferred to Moonlight.</li>
+        </ul>
+        
+        <label for="agreeCheckbox" class="checkbox-container">
+            <input type="checkbox" id="agreeCheckbox">
+            I understand and accept the Beta Disclaimer.
+        </label>
+
+        <div class="modal-actions">
+            <button id="cancelBtn" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.3); font-weight: 500;">
+                Cancel
+            </button>
+            <a href="http://moonlight-app.xyz" target="_blank">
+                <button id="continueBtn" class="btn" disabled>
+                    Continue to Moonlight
+                </button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById('disclaimerModal');
+    const openBtn = document.getElementById('openModalBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const continueBtn = document.getElementById('continueBtn');
+    const agreeCheckbox = document.getElementById('agreeCheckbox');
+
+    // Show the modal when the main button is clicked
+    openBtn.addEventListener('click', () => {
+        modal.classList.add('show');
+    });
+
+    // Hide the modal when the cancel button is clicked
+    cancelBtn.addEventListener('click', () => {
+        modal.classList.remove('show');
+        // Reset state
+        agreeCheckbox.checked = false;
+        continueBtn.disabled = true;
+    });
+
+    // Toggle the 'Continue' button based on checkbox state
+    agreeCheckbox.addEventListener('change', () => {
+        continueBtn.disabled = !agreeCheckbox.checked;
+    });
+
+    // Allow clicking the backdrop to close the modal, but not the content itself
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('show');
+            // Reset state
+            agreeCheckbox.checked = false;
+            continueBtn.disabled = true;
+        }
+    });
+</script>
+
+</body>
+</html>
